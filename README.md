@@ -11,7 +11,8 @@ var copy = require('couchdb-to-S3');
 
 var db = {
     url: "http://localhost:5984",
-    name: "the name of your database"
+    name: "the name of your database",
+    newName: "new file name for S3"
 };
 
 var aws = {

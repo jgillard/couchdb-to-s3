@@ -7,6 +7,7 @@ module.exports = function copy(db, aws, callback) {
 	db = db || {};
 	db.url = db.url || "http://localhost:5984";
 	db.name = db.name || "database";
+	db.newName = db.newName || db.name;
 
 	aws = aws || {};
 	aws.accessKeyId = aws.accessKeyId || "no access key id";
@@ -15,12 +16,13 @@ module.exports = function copy(db, aws, callback) {
 
 	var dbSettings   = couch(db.url);
 	var dbName       = db.name;
+	var dbNewName    = db.newName;
 	var s3BucketName = aws.bucket;
 
 	dbSettings.getDatabaseDir(function (err, dbDir) {
 		if (err) {
 			var error = {};
-			error.message = "Could not connect to CouchDB."
+			error.message = "Could not connect to CouchDB.";
 			error.error = err;
 			return callback(error);
 		}
@@ -33,7 +35,7 @@ module.exports = function copy(db, aws, callback) {
 
 		var dbFileExt = ".couch";
 		var dbFilePath = path.join(dbDir, dbName + dbFileExt);
-		var s3FilePath = "/" + dbName + dbFileExt;
+		var s3FilePath = "/" + dbNewName + dbFileExt;
 
 		console.log("Copying database ");
 		console.log("  from " + dbFilePath);
